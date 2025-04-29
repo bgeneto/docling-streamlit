@@ -1,0 +1,26 @@
+services:
+  docling:
+    image: docling-streamlit:latest
+    build: .
+    container_name: docling
+    hostname: docling
+    restart: always
+    volumes:
+      - ./cache:/root/.cache
+      - ./main.py:/app/main.py
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8501:8501"
+    #user: "1000:1000"
+    tmpfs:
+      - /tmp
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+              count: all
+

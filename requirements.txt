@@ -1,0 +1,6 @@
+docling
+streamlit
+pathlib
+pandas
+tensorflow
+pypdfium2

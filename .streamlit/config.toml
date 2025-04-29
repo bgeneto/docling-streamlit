@@ -1,0 +1,3 @@
+[server]
+# turn off the inotify/watchdog watcher that inspects modules
+fileWatcherType = "none"
