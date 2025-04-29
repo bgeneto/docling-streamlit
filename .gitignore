@@ -61,7 +61,6 @@ Pipfile.lock
 
 # Docker
 *.log
-cache/
 
 # OS files
 .DS_Store
