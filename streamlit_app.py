@@ -767,7 +767,7 @@ if compress_output and st.session_state.conversions:
             st.caption(
                 f"🤖 VLM Pipeline: {vlm_settings['pipeline']} using {vlm_settings['model']}"
             )
-        with st.expander("👁️ Preview Content"):
+        with st.expander("👁️ Preview Content", expanded=True):
             tab1, tab2, tab3, tab4 = st.tabs(["Markdown", "Text", "JSON", "HTML"])
             with tab1:
                 preview_md, md_truncated = preview_text_content(
@@ -874,7 +874,7 @@ else:
             file_name=f"{data['base']}.zip",
             mime="application/zip",
         )
-        with st.expander("👁️ Preview Content"):
+        with st.expander("👁️ Preview Content", expanded=True):
             tab1, tab2, tab3, tab4 = st.tabs(["Markdown", "Text", "JSON", "HTML"])
             with tab1:
                 preview_md, md_truncated = preview_text_content(
