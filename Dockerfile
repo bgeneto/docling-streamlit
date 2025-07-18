@@ -10,16 +10,16 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
+    build-essential python3 python3-pip \
     curl \
     software-properties-common \
-    git \
     tesseract-ocr \
     tesseract-ocr-por \
     tesseract-ocr-spa \
     tesseract-ocr-ita \
     tesseract-ocr-deu \
     tesseract-ocr-fra \
+    libgl1 libglib2.0-0 curl wget git procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy only requirements first to leverage Docker cache
@@ -31,9 +31,9 @@ RUN pip install --upgrade pip setuptools wheel \
     && rm -rf /root/.cache/pip
 
 # Copy the rest of the application
-COPY ./.streamlit .
-COPY ./requirements.txt .
-COPY ./main.py .
+COPY ./streamlit_app.py .
+
+#RUN docling-tools models download
 
 # Expose Streamlit port
 EXPOSE 8501
@@ -44,6 +44,7 @@ HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 # Set Streamlit configuration
 ENV STREAMLIT_SERVER_PORT=8501
 ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0
+ENV OMP_NUM_THREADS=4
 
 # Run the application
-CMD ["streamlit", "run", "main.py"]
+CMD ["streamlit", "run", "streamlit_app.py", "--browser.gatherUsageStats", "false"]

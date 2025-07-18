@@ -1,13 +1,14 @@
 services:
-  docling:
+  docling-streamlit:
     image: docling-streamlit:latest
     build: .
-    container_name: docling
-    hostname: docling
+    container_name: docling-streamlit
+    hostname: docling-streamlit
+    ipc: host
     restart: always
     volumes:
       - ./cache:/root/.cache
-      - ./main.py:/app/main.py
+      - ./streamlit_app.py:/app/streamlit_app.py
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
@@ -22,5 +23,5 @@ services:
           devices:
             - driver: nvidia
               capabilities: [gpu]
-              count: all
-
+              #count: all
+              device_ids: ["1"]

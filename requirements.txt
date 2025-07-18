@@ -2,5 +2,8 @@ docling
 streamlit
 pathlib
 pandas
+numpy
 tensorflow
 pypdfium2
+accelerate
+transformers
