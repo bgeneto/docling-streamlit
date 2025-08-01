@@ -3,7 +3,7 @@ Docling Streamlit Document Converter App
 
 Author: bgeneto
 Date: 2025-08-01
-Version: 1.6.1
+Version: 1.6.2
 
 This Streamlit application provides a user interface for converting documents (PDF, DOCX, PPTX, XLSX, images, etc.) using the Docling library. It supports both Standard pipeline (OCR, table detection, code/formula enrichment) and VLM pipeline (Vision-Language Model with SmolDocling) for enhanced document understanding. Features robust error handling, automatic accelerator detection, intelligent file validation, progress tracking, and enhanced resource management. Users can configure conversion options and download results in various formats with intelligent preview truncation for large documents.
 """
@@ -178,7 +178,6 @@ def convert_document(
             pdf_opts.images_scale = 2.0
             pdf_opts.generate_page_images = include_images
             pdf_opts.generate_picture_images = include_images
-            pdf_opts.preserve_line_breaks = preserve_line_breaks
 
             if do_ocr:
                 ocr_options = TesseractCliOcrOptions(
@@ -481,7 +480,12 @@ with st.sidebar:
     preserve_line_breaks = st.checkbox(
         "Preserve original line breaks",
         value=False,
-        help="Keep original line breaks from the document in the output text",
+        disabled=not use_vlm_pipeline,
+        help=(
+            "Keep original line breaks from the document in the output text (VLM pipeline only)"
+            if not use_vlm_pipeline
+            else "Keep original line breaks from the document in the output text"
+        ),
     )
 
     do_code = False
@@ -973,5 +977,5 @@ if st.session_state.conversions:
 current_year = time.strftime("%Y")
 st.markdown("---")
 st.caption(
-    f"Docling Document Converter v1.6.1 | Copyright © 2025-{current_year} by bgeneto"
+    f"Docling Document Converter v1.6.2 | Copyright © 2025-{current_year} by bgeneto"
 )
