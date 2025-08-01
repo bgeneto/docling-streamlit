@@ -124,7 +124,6 @@ def convert_document(
     force_full_page_ocr: bool = False,
     include_images: bool = True,
     use_vlm_pipeline: bool = False,
-    preserve_line_breaks: bool = False,
     # Cache key parameters - these ensure cache invalidation when settings change
     _cache_buster: str = None,  # Will be populated with all settings as a string
 ) -> Dict[str, Any]:
@@ -415,13 +414,12 @@ def generate_cache_buster(
     force_full_page_ocr: bool,
     include_images: bool,
     use_vlm_pipeline: bool,
-    preserve_line_breaks: bool,
 ) -> str:
     """
     Generate a cache buster string based on all conversion settings.
     This ensures the cache is invalidated when any setting changes.
     """
-    return f"ocr_{do_ocr}_tables_{do_tables}_cells_{match_cells}_code_{do_code}_formulas_{do_formulas}_dpi_{ocr_dpi}_fullpage_{force_full_page_ocr}_images_{include_images}_vlm_{use_vlm_pipeline}_linebreaks_{preserve_line_breaks}"
+    return f"ocr_{do_ocr}_tables_{do_tables}_cells_{match_cells}_code_{do_code}_formulas_{do_formulas}_dpi_{ocr_dpi}_fullpage_{force_full_page_ocr}_images_{include_images}_vlm_{use_vlm_pipeline}"
 
 
 # ----------------------------------------------------------------------------
@@ -473,14 +471,6 @@ with st.sidebar:
             if use_vlm_pipeline
             else "Improve table structure recognition"
         ),
-    )
-
-    # New option for preserving line breaks
-    preserve_line_breaks = st.checkbox(
-        "Preserve original line breaks",
-        value=False,
-        disabled=True,
-        help="Keep original line breaks from the document in the output text (not available in current Docling version)",
     )
 
     do_code = False
@@ -642,7 +632,6 @@ current_cache_buster = generate_cache_buster(
     force_full_page_ocr,
     include_images,
     use_vlm_pipeline,
-    preserve_line_breaks,
 )
 
 # Store the cache buster for each file to detect setting changes
@@ -709,7 +698,6 @@ if uploaded:
                         force_full_page_ocr,
                         include_images=include_images,
                         use_vlm_pipeline=use_vlm_pipeline,
-                        preserve_line_breaks=preserve_line_breaks,
                         _cache_buster=current_cache_buster,
                     )
                     st.session_state.conversions[key] = data
